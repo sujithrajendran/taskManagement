@@ -22,7 +22,7 @@ const CreateTask = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://taskmanagement-backend-xjgy.onrender.com/api/tasks",
+        "https://taskmanagement-backend-xjgy.onrender.com/api/tasks",
         form
       );
       setMessage(response.data.message);

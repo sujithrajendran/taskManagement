@@ -20,7 +20,7 @@ const TaskDetails = () => {
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this task?")) {
-      await axios.delete(`http://localhost:4000/api/tasks/${id}`);
+      await axios.delete(`http://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
       navigate("/");
     }
   };

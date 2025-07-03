@@ -11,7 +11,7 @@ const TaskDetails = () => {
 
   const fetchTask = async () => {
     try {
-      const res = await axios.get(`http://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
+      const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
       setTask(res.data.task[0]);
     } catch {
       setError("Task not found");
@@ -20,7 +20,7 @@ const TaskDetails = () => {
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this task?")) {
-      await axios.delete(`http://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
+      await axios.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
       navigate("/");
     }
   };

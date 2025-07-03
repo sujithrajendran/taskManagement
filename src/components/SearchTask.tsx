@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/SearchTask.css";
+import { useLoading } from "./LoadingContext";
 
 const SearchTask = () => {
+  const { setIsLoading } = useLoading();
   const [title, setTitle] = useState("");
   const [allTasks, setAllTasks] = useState<any[]>([]);
   const [results, setResults] = useState<any[]>([]);
@@ -15,7 +17,9 @@ const SearchTask = () => {
   const fetchTasks = async () => {
     try {
       setError("");
+      setIsLoading(true);
       const res = await axios.get("https://taskmanagement-backend-xjgy.onrender.com/api/tasks");
+      setIsLoading(false);
       const data = res.data.tasks || [];
       setAllTasks(data);
       setResults(data);

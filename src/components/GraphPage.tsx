@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
 import axios from "axios";
+import { useLoading } from "./LoadingContext";
 
 const GraphPage = () => {
+  const { setIsLoading } = useLoading();
   const [chartData, setChartData] = useState<any>(null);
   const [selectedKey, setSelectedKey] = useState("status");
   const chartRef = useRef<HTMLDivElement>(null);
 
   const fetchChartData = async (chartKey: string) => {
     try {
+      setIsLoading(true);
       const res = await axios.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/chart", {
         chartKey
       });
+      setIsLoading(false);
       const chartData = res.data.chartData ? res.data.chartData : {};
       setChartData(chartData);
     } catch (err) {

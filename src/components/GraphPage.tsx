@@ -9,7 +9,7 @@ const GraphPage = () => {
 
   const fetchChartData = async (chartKey: string) => {
     try {
-      const res = await axios.post("http://localhost:4000/api/tasks/chart", {
+      const res = await axios.post("http://taskmanagement-backend-xjgy.onrender.com/api/tasks/chart", {
         chartKey
       });
       const chartData = res.data.chartData ? res.data.chartData : {};

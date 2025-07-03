@@ -24,7 +24,7 @@ const UpdateTask = () => {
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const res = await axios.get(`http://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`);
+        const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`);
         const task = res.data.task[0];
         const newForm = {
           taskName: task.taskName || "",
@@ -50,7 +50,7 @@ const UpdateTask = () => {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`http://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`, form);
+      await axios.put(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`, form);
       setMessage("Task updated successfully!");
       setIsSuccess(true);
       navigate("/");

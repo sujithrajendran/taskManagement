@@ -11,7 +11,7 @@ const TaskDetails = () => {
 
   const fetchTask = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/tasks/${id}`);
+      const res = await axios.get(`http://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
       setTask(res.data.task[0]);
     } catch {
       setError("Task not found");

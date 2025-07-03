@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/CreateTask.css";
+import { useLoading } from "./LoadingContext";
 
 const TaskDetails = () => {
+  const { setIsLoading } = useLoading();
   const { id } = useParams();
   const navigate = useNavigate();
   const [task, setTask] = useState<any>(null);
@@ -11,7 +13,9 @@ const TaskDetails = () => {
 
   const fetchTask = async () => {
     try {
+      setIsLoading(true);
       const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
+      setIsLoading(false);
       setTask(res.data.task[0]);
     } catch {
       setError("Task not found");

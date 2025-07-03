@@ -12,6 +12,8 @@ import TaskDetails from "./components/TaskDetails";
 import { Home } from "lucide-react";
 import UpdateTask from "./components/UpdateTask";
 import "./App.css";
+import { LoadingProvider } from "./components/LoadingContext"
+import GlobalLoader from "./components/GlobalLoader";
 
 const AppHeader = () => {
   const navigate = useNavigate();
@@ -37,21 +39,24 @@ const AppHeader = () => {
 function App() {
   return (
     <Router>
-      <div className="app-container">
-        <AppHeader />
-        <div className="main-layout">
-          <aside className="sidebar"></aside>
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<SearchTask />} />
-              <Route path="/create" element={<CreateTask />} />
-              <Route path="/graph" element={<GraphPage />} />
-              <Route path="/task/:id" element={<TaskDetails />} />
-              <Route path="/edit/:id" element={<UpdateTask />} />
-            </Routes>
-          </main>
+      <LoadingProvider>
+        <GlobalLoader />
+        <div className="app-container">
+          <AppHeader />
+          <div className="main-layout">
+            <aside className="sidebar"></aside>
+            <main className="main-content">
+              <Routes>
+                <Route path="/" element={<SearchTask />} />
+                <Route path="/create" element={<CreateTask />} />
+                <Route path="/graph" element={<GraphPage />} />
+                <Route path="/task/:id" element={<TaskDetails />} />
+                <Route path="/edit/:id" element={<UpdateTask />} />
+              </Routes>
+            </main>
+          </div>
         </div>
-      </div>
+      </LoadingProvider>
     </Router>
   );
 }

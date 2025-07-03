@@ -15,7 +15,7 @@ const SearchTask = () => {
   const fetchTasks = async () => {
     try {
       setError("");
-      const res = await axios.get("http://localhost:4000/api/tasks");
+      const res = await axios.get("http://taskmanagement-backend-xjgy.onrender.com/api/tasks");
       const data = res.data.tasks || [];
       setAllTasks(data);
       setResults(data);

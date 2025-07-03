@@ -7,7 +7,7 @@ const DeleteTask = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:4000/api/tasks/${id}`);
+      await axios.delete(`http://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`);
       setMessage('Task deleted');
     } catch {
       setMessage('Failed to delete task');

@@ -3,8 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { CheckCircle, XCircle } from "lucide-react";
 import "../css/CreateTask.css";
+import { useLoading } from "./LoadingContext";
 
 const UpdateTask = () => {
+  const { setIsLoading } = useLoading();
   const navigate = useNavigate();
   const { id: taskId } = useParams();
   const [form, setForm] = useState({
@@ -16,7 +18,7 @@ const UpdateTask = () => {
     createdBy: ""
   });
 
-  const [initialForm, setInitialForm] = useState(form); // New: store original form
+  const [initialForm, setInitialForm] = useState(form);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
@@ -24,7 +26,9 @@ const UpdateTask = () => {
   useEffect(() => {
     const fetchTask = async () => {
       try {
+        setIsLoading(true);
         const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`);
+        setIsLoading(false);
         const task = res.data.task[0];
         const newForm = {
           taskName: task.taskName || "",
@@ -50,7 +54,9 @@ const UpdateTask = () => {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       await axios.put(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`, form);
+      setIsLoading(false);
       setMessage("Task updated successfully!");
       setIsSuccess(true);
       navigate("/");

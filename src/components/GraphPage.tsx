@@ -11,9 +11,14 @@ const GraphPage = () => {
 
   const fetchChartData = async (chartKey: string) => {
     try {
+      const userData = localStorage.getItem("user");
+      const token = userData ? JSON.parse(userData).token : null;
       setIsLoading(true);
-      const res = await axios.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/chart", {
-        chartKey
+      const res = await axios.post("http://localhost:4000/api/tasks/chart", {
+        chartKey,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       setIsLoading(false);
       const chartData = res.data.chartData ? res.data.chartData : {};

@@ -12,15 +12,13 @@ const SearchTask = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-
-  // Fetch tasks on mount
   const fetchTasks = async () => {
     try {
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
 
       setError("");
-      // setIsLoading(true);
+      setIsLoading(true);
       const res = await axios.get("https://taskmanagement-backend-xjgy.onrender.com/api/tasks", {
         headers: {
           Authorization: `Bearer ${token}`

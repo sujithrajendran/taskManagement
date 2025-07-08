@@ -15,7 +15,7 @@ const Signup = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post("https://taskmanagement-4l0e.onrender.com/api/tasks/register", signUp);
+      await axios.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/register", signUp);
       navigate("/login");
     } catch {
       setMessage("Signup failed");

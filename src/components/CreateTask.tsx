@@ -110,10 +110,10 @@ const CreateTask = () => {
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value })}
             >
-              <option value="started">Started</option>
-              <option value="inProgress">In-Progress</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
+              <option value="Started">Started</option>
+              <option value="In-Progress">In-Progress</option>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
             </select>
           </div>
 

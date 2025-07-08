@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Auth.css";
 import axios from "axios";
+import { useLoading } from "./LoadingContext";
 
 const Signup = () => {
+  const { setIsLoading } = useLoading();
   const [signUp, setSignUp] = useState({
     userName: "",
     password: "",
@@ -15,7 +17,9 @@ const Signup = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       await axios.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/register", signUp);
+      setIsLoading(false);
       navigate("/login");
     } catch {
       setMessage("Signup failed");

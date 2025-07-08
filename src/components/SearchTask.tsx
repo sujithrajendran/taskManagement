@@ -16,9 +16,16 @@ const SearchTask = () => {
   // Fetch tasks on mount
   const fetchTasks = async () => {
     try {
+      const userData = localStorage.getItem("user");
+      const token = userData ? JSON.parse(userData).token : null;
+
       setError("");
-      setIsLoading(true);
-      const res = await axios.get("https://taskmanagement-backend-xjgy.onrender.com/api/tasks");
+      // setIsLoading(true);
+      const res = await axios.get("http://localhost:4000/api/tasks", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setIsLoading(false);
       const data = res.data.tasks || [];
       setAllTasks(data);
@@ -70,8 +77,7 @@ const SearchTask = () => {
                 transform: "translateY(-50%)",
                 cursor: "pointer",
                 fontSize: "16px",
-                color: "#666",
-                
+                color: "#666"
               }}
             >
               X

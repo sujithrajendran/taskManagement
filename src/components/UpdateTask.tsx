@@ -31,7 +31,7 @@ const UpdateTask = () => {
         const token = userData ? JSON.parse(userData).token : null;
 
         const res = await axios.get(
-          `https://taskmanagement-4l0e.onrender.com/api/tasks/${taskId}`,
+          `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -67,7 +67,7 @@ const UpdateTask = () => {
       setIsLoading(true);
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
-      await axios.put(`https://taskmanagement-4l0e.onrender.com/api/tasks/${taskId}`, form, {
+      await axios.put(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`, form, {
         headers: {
           Authorization: `Bearer ${token}`
         }

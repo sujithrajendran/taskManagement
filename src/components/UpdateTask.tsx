@@ -18,7 +18,7 @@ const UpdateTask = () => {
     createdBy: ""
   });
 
-  const [initialForm, setInitialForm] = useState(form); // New: store original form
+  const [initialForm, setInitialForm] = useState(form);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
@@ -31,7 +31,7 @@ const UpdateTask = () => {
         const token = userData ? JSON.parse(userData).token : null;
 
         const res = await axios.get(
-          `http://localhost:4000/api/tasks/${taskId}`,
+          `https://taskmanagement-4l0e.onrender.com/api/tasks/${taskId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -67,7 +67,7 @@ const UpdateTask = () => {
       setIsLoading(true);
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
-      await axios.put(`http://localhost:4000/api/tasks/${taskId}`, form, {
+      await axios.put(`https://taskmanagement-4l0e.onrender.com/api/tasks/${taskId}`, form, {
         headers: {
           Authorization: `Bearer ${token}`
         }

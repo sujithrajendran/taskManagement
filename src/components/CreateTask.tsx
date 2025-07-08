@@ -20,10 +20,17 @@ const CreateTask = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    const userData = localStorage.getItem("user");
+    const token = userData ? JSON.parse(userData).token : null;
     try {
       const response = await axios.post(
-        "https://taskmanagement-backend-xjgy.onrender.com/api/tasks",
-        form
+        "http://localhost:4000/api/tasks",
+        form,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
       setMessage(response.data.message);
       setIsSuccess(true);
@@ -78,6 +85,7 @@ const CreateTask = () => {
             <input
               type="date"
               value={form.createdAt}
+              max={new Date().toISOString().split("T")[0]}
               onChange={(e) => setForm({ ...form, createdAt: e.target.value })}
               required
             />

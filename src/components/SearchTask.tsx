@@ -21,7 +21,7 @@ const SearchTask = () => {
 
       setError("");
       // setIsLoading(true);
-      const res = await axios.get("http://localhost:4000/api/tasks", {
+      const res = await axios.get("https://taskmanagement-4l0e.onrender.com/api/tasks", {
         headers: {
           Authorization: `Bearer ${token}`
         }

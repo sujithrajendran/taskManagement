@@ -3,8 +3,10 @@ import axios from "axios";
 import { CheckCircle, XCircle } from "lucide-react";
 import "../css/CreateTask.css";
 import { useNavigate } from "react-router-dom";
+import { useLoading } from "./LoadingContext";
 
 const CreateTask = () => {
+  const { setIsLoading } = useLoading();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     taskName: "",
@@ -23,6 +25,7 @@ const CreateTask = () => {
     const userData = localStorage.getItem("user");
     const token = userData ? JSON.parse(userData).token : null;
     try {
+      setIsLoading(true);
       const response = await axios.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks",
         form,
@@ -32,6 +35,7 @@ const CreateTask = () => {
           }
         }
       );
+      setIsLoading(false);
       setMessage(response.data.message);
       setIsSuccess(true);
       setForm({

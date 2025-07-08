@@ -9,7 +9,7 @@ const DeleteTask = () => {
     try {
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
-      await axios.delete(`https://taskmanagement-4l0e.onrender.com/api/tasks/${id}`, {
+      await axios.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

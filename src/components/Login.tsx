@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CheckCircle, XCircle } from "lucide-react";
-import "../css/CreateTask.css"; // Shared style for consistent layout
+import "../css/CreateTask.css";
+import { useLoading } from "./LoadingContext";
 
 const Login = () => {
+  const { setIsLoading } = useLoading();
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
@@ -15,11 +17,12 @@ const Login = () => {
     setMessage("");
 
     try {
+      setIsLoading(true);
       const res = await axios.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks/login",
         form
       );
-
+      setIsLoading(false);
       if (res.data?.token) {
         localStorage.setItem("user", JSON.stringify({ token: res.data.token }));
         setIsSuccess(true);

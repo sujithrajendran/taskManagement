@@ -18,7 +18,7 @@ const UpdateTask = () => {
     createdBy: ""
   });
 
-  const [initialForm, setInitialForm] = useState(form);
+  const [initialForm, setInitialForm] = useState(form); // New: store original form
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
@@ -27,14 +27,24 @@ const UpdateTask = () => {
     const fetchTask = async () => {
       try {
         setIsLoading(true);
-        const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`);
+        const userData = localStorage.getItem("user");
+        const token = userData ? JSON.parse(userData).token : null;
+
+        const res = await axios.get(
+          `http://localhost:4000/api/tasks/${taskId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
         setIsLoading(false);
         const task = res.data.task[0];
         const newForm = {
           taskName: task.taskName || "",
           description: task.description || "",
-          status: task.status || "pending",
-          priority: task.priority || "Medium",
+          status: task.status,
+          priority: task.priority,
           createdAt: task.createdAt || "",
           createdBy: task.createdBy || ""
         };
@@ -55,7 +65,13 @@ const UpdateTask = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      await axios.put(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`, form);
+      const userData = localStorage.getItem("user");
+      const token = userData ? JSON.parse(userData).token : null;
+      await axios.put(`http://localhost:4000/api/tasks/${taskId}`, form, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setIsLoading(false);
       setMessage("Task updated successfully!");
       setIsSuccess(true);
@@ -93,7 +109,9 @@ const UpdateTask = () => {
             <textarea
               rows={3}
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
             />
           </div>
 
@@ -103,10 +121,10 @@ const UpdateTask = () => {
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value })}
             >
-              <option value="started">Started</option>
-              <option value="inProgress">In-Progress</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
+              <option value="Started">Started</option>
+              <option value="In-Progress">In-Progress</option>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
             </select>
           </div>
 
@@ -150,7 +168,10 @@ const UpdateTask = () => {
             type="submit"
             className="task-submit-btn"
             disabled={!isFormChanged}
-            style={{ opacity: isFormChanged ? 1 : 0.5, cursor: isFormChanged ? "pointer" : "not-allowed" }}
+            style={{
+              opacity: isFormChanged ? 1 : 0.5,
+              cursor: isFormChanged ? "pointer" : "not-allowed"
+            }}
           >
             Update Task
           </button>

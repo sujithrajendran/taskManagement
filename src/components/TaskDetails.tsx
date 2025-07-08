@@ -16,7 +16,7 @@ const TaskDetails = () => {
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
       setIsLoading(true);
-      const res = await axios.get(`https://taskmanagement-4l0e.onrender.com/api/tasks/${id}`, {
+      const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -33,7 +33,7 @@ const TaskDetails = () => {
     const userData = localStorage.getItem("user");
     const token = userData ? JSON.parse(userData).token : null;
     if (window.confirm("Are you sure you want to delete this task?")) {
-      await axios.delete(`https://taskmanagement-4l0e.onrender.com/api/tasks/${id}`, {
+      await axios.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

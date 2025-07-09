@@ -18,7 +18,7 @@ const UpdateTask = () => {
     createdBy: ""
   });
 
-  const [initialForm, setInitialForm] = useState(form); // New: store original form
+  const [initialForm, setInitialForm] = useState(form);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
@@ -83,8 +83,6 @@ const UpdateTask = () => {
   };
 
   const isFormChanged = JSON.stringify(form) !== JSON.stringify(initialForm);
-
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
 
   return (
     <div className="task-container">

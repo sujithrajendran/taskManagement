@@ -14,15 +14,14 @@ const TaskDetails = () => {
   const fetchTask = async () => {
     try {
       const userData = localStorage.getItem("user");
-      const token = userData ? JSON.parse(userData).token : null;
       setIsLoading(true);
+      const token = userData ? JSON.parse(userData).token : null;
       const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       setIsLoading(false);
-
       setTask(res.data.task[0]);
     } catch {
       setError("Task not found");

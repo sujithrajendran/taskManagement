@@ -19,7 +19,6 @@ const UpdateTask = () => {
   });
 
   const [initialForm, setInitialForm] = useState(form);
-  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
 
@@ -53,8 +52,6 @@ const UpdateTask = () => {
       } catch {
         setMessage("Failed to fetch task");
         setIsSuccess(false);
-      } finally {
-        setLoading(false);
       }
     };
 

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { CheckCircle, XCircle } from "lucide-react";
-import "../css/CreateTask.css";
 import { useLoading } from "./LoadingContext";
+import "../css/CreateTask.css";
 
 const Login = () => {
   const { setIsLoading } = useLoading();
@@ -32,6 +31,7 @@ const Login = () => {
         setMessage("Invalid email or password");
       }
     } catch (err: any) {
+      setIsLoading(false);
       setIsSuccess(false);
       setMessage(
         err.response?.data?.message || "Login failed. Please try again."
@@ -42,7 +42,7 @@ const Login = () => {
   return (
     <div className="login-wrapper">
       <div className="login-container">
-        <h2>Login</h2>
+        <h2>Sign Up</h2>
         <form onSubmit={handleLogin} className="auth-form">
           <label>Email</label>
           <input
@@ -65,6 +65,9 @@ const Login = () => {
           <button type="submit">Login</button>
           <p className="auth-link" onClick={() => navigate("/signup")}>
             Don&apos;t have an account? Sign up
+          </p>
+          <p className="auth-link" onClick={() => navigate("/forgot-password")}>
+            Forgot Password?
           </p>
           {message && <div className="task-alert error">{message}</div>}
         </form>

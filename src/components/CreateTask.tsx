@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoading } from "./LoadingContext";
 
 const CreateTask = () => {
-  const { setIsLoading } = useLoading();
+    const { setIsLoading } = useLoading();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     taskName: "",

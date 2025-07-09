@@ -12,6 +12,8 @@ const SearchTask = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  // Fetch tasks on mount
   const fetchTasks = async () => {
     try {
       const userData = localStorage.getItem("user");

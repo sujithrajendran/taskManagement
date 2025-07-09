@@ -19,6 +19,7 @@ import { Home } from "lucide-react";
 import { LoadingProvider } from "./components/LoadingContext";
 import GlobalLoader from "./components/GlobalLoader";
 import "./App.css";
+import ResetPassword from "./components/ResetPassword";
 
 // Header Component
 const AppHeader = () => {
@@ -52,7 +53,6 @@ const AppHeader = () => {
   );
 };
 
-
 // Wrapper for checking login
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = !!localStorage.getItem("user");
@@ -80,6 +80,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Private Routes */}
           <Route

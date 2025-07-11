@@ -18,8 +18,7 @@ const UpdateTask = () => {
     createdBy: ""
   });
 
-  const [initialForm, setInitialForm] = useState(form); // New: store original form
-  const [loading, setLoading] = useState(true);
+  const [initialForm, setInitialForm] = useState(form);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
 
@@ -53,8 +52,6 @@ const UpdateTask = () => {
       } catch {
         setMessage("Failed to fetch task");
         setIsSuccess(false);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -83,8 +80,6 @@ const UpdateTask = () => {
   };
 
   const isFormChanged = JSON.stringify(form) !== JSON.stringify(initialForm);
-
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
 
   return (
     <div className="task-container">

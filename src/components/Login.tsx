@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLoading } from "./LoadingContext";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import "../css/CreateTask.css";
 
 const Login = () => {
@@ -14,7 +16,6 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
-
     try {
       setIsLoading(true);
       const res = await axios.post(
@@ -36,6 +37,22 @@ const Login = () => {
       setMessage(
         err.response?.data?.message || "Login failed. Please try again."
       );
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    try {
+      const token: any = jwtDecode(credentialResponse.credential);
+      const res = await axios.post(
+        "https://taskmanagement-backend-xjgy.onrender.com/api/tasks/google-login",
+        { token }
+      );
+      if (res.data?.token) {
+        localStorage.setItem("user", JSON.stringify({ token: res.data.token }));
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Google login failed", error);
     }
   };
 
@@ -71,6 +88,13 @@ const Login = () => {
           </p>
           {message && <div className="task-alert error">{message}</div>}
         </form>
+
+        <div style={{ marginTop: "20px" }}>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => console.error("Login Failed")}
+          />
+        </div>
       </div>
     </div>
   );

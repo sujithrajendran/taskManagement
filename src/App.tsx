@@ -15,13 +15,14 @@ import UpdateTask from "./components/UpdateTask";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import ForgotPassword from "./components/ForgetPassword";
+import ResetPassword from "./components/ResetPassword";
 import { Home } from "lucide-react";
 import { LoadingProvider } from "./components/LoadingContext";
 import GlobalLoader from "./components/GlobalLoader";
+import { useAutoLogout } from "./Auth/Auth";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./App.css";
-import ResetPassword from "./components/ResetPassword";
 
-// Header Component
 const AppHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,10 +54,30 @@ const AppHeader = () => {
   );
 };
 
-// Wrapper for checking login
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = !!localStorage.getItem("user");
   return isLoggedIn ? <>{children}</> : <Navigate to="/login" />;
+};
+
+const ProtectedApp = () => {
+  useAutoLogout();
+  return (
+    <div className="app-container">
+      <AppHeader />
+      <div className="main-layout">
+        <aside className="sidebar"></aside>
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<SearchTask />} />
+            <Route path="/create" element={<CreateTask />} />
+            <Route path="/graph" element={<GraphPage />} />
+            <Route path="/task/:id" element={<TaskDetails />} />
+            <Route path="/edit/:id" element={<UpdateTask />} />
+          </Routes>
+        </main>
+      </div>
+    </div>
+  );
 };
 
 function App() {
@@ -71,43 +92,27 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <LoadingProvider>
-        <GlobalLoader />
-
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-
-          {/* Private Routes */}
-          <Route
-            path="*"
-            element={
-              <PrivateRoute>
-                <div className="app-container">
-                  <AppHeader />
-                  <div className="main-layout">
-                    <aside className="sidebar"></aside>
-                    <main className="main-content">
-                      <Routes>
-                        <Route path="/" element={<SearchTask />} />
-                        <Route path="/create" element={<CreateTask />} />
-                        <Route path="/graph" element={<GraphPage />} />
-                        <Route path="/task/:id" element={<TaskDetails />} />
-                        <Route path="/edit/:id" element={<UpdateTask />} />
-                      </Routes>
-                    </main>
-                  </div>
-                </div>
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </LoadingProvider>
-    </Router>
+    <GoogleOAuthProvider clientId="231869908036-q7qqui5l3s3ngmpamlfub4mhr2lbcg7e.apps.googleusercontent.com">
+      <Router>
+        <LoadingProvider>
+          <GlobalLoader />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="*"
+              element={
+                <PrivateRoute>
+                  <ProtectedApp />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </LoadingProvider>
+      </Router>
+    </GoogleOAuthProvider>
   );
 }
 

@@ -11,7 +11,7 @@ const CreateTask = () => {
   const [form, setForm] = useState({
     taskName: "",
     description: "",
-    status: "pending",
+    status: "Pending",
     priority: "Medium",
     createdAt: "",
     createdBy: ""

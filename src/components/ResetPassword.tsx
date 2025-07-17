@@ -9,11 +9,9 @@ const ResetPassword = () => {
   const token = searchParams.get("token");
   const navigate = useNavigate();
   const { setIsLoading } = useLoading();
-
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-
   const [passwordWarning, setPasswordWarning] = useState("");
   const [confirmWarning, setConfirmWarning] = useState("");
 

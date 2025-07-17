@@ -80,12 +80,20 @@ const Login = () => {
           />
 
           <button type="submit">Login</button>
+          <button
+            type="button"
+            className="google-login-btn"
+            onClick={() => navigate("/email-login")}
+          >
+            Google verification Login
+          </button>
           <p className="auth-link" onClick={() => navigate("/signup")}>
             Don&apos;t have an account? Sign up
           </p>
           <p className="auth-link" onClick={() => navigate("/forgot-password")}>
             Forgot Password?
           </p>
+
           {message && <div className="task-alert error">{message}</div>}
         </form>
 

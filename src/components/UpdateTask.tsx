@@ -37,6 +37,7 @@ const UpdateTask = () => {
             }
           }
         );
+
         setIsLoading(false);
         const task = res.data.task[0];
         const newForm = {
@@ -50,6 +51,7 @@ const UpdateTask = () => {
         setForm(newForm);
         setInitialForm(newForm);
       } catch {
+        setIsLoading(false);
         setMessage("Failed to fetch task");
         setIsSuccess(false);
       }

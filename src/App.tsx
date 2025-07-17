@@ -22,6 +22,8 @@ import GlobalLoader from "./components/GlobalLoader";
 import { useAutoLogout } from "./Auth/Auth";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./App.css";
+import EmailLogin from "./components/EmailLogin";
+import EnterPin from "./components/EnterPin";
 
 const AppHeader = () => {
   const navigate = useNavigate();
@@ -101,6 +103,9 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/email-login" element={<EmailLogin />} />
+            <Route path="/enter-pin" element={<EnterPin />} />
+
             <Route
               path="*"
               element={

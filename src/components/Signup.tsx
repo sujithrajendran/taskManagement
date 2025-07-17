@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "../css/Auth.css";
 import axios from "axios";
 import { useLoading } from "./LoadingContext";
-import { Eye, EyeOff } from "lucide-react";
 
 const Signup = () => {
   const { setIsLoading } = useLoading();
@@ -13,10 +12,10 @@ const Signup = () => {
     confirmPassword: "",
     email: ""
   });
+
   const [message, setMessage] = useState("");
   const [passwordWarning, setPasswordWarning] = useState("");
   const [confirmWarning, setConfirmWarning] = useState("");
-
   const navigate = useNavigate();
 
   const isStrongPassword = (password: string): boolean => {

@@ -61,6 +61,7 @@ const EnterPin = () => {
         setMessage("Invalid or expired code");
       }
     } catch (err) {
+      setIsLoading(false);
       setMessage("Something went wrong. Try again.");
     }
   };

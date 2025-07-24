@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../Auth/AxiosInstance";
 import { CheckCircle, XCircle } from "lucide-react";
 import "../css/CreateTask.css";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ const CreateTask = () => {
     const token = userData ? JSON.parse(userData).token : null;
     try {
       setIsLoading(true);
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks",
         form,
         {

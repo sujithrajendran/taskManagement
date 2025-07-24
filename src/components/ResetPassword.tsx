@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "../css/Auth.css";
-import axios from "axios";
 import { useLoading } from "./LoadingContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -41,7 +41,7 @@ const ResetPassword = () => {
 
     try {
       setIsLoading(true);
-      await axios.post(
+      await axiosInstance.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks/reset-password",
         { password },
         {

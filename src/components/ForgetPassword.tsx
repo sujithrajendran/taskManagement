@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../css/Auth.css";
-import axios from "axios";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const ForgotPassword = () => {
   const { setIsLoading } = useLoading();
@@ -12,7 +12,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      await axios.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/forget-password", {
+      await axiosInstance.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/forget-password", {
         email
       });
       setIsLoading(false);

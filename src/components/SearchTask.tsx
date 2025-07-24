@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../css/SearchTask.css";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const SearchTask = () => {
   const { setIsLoading } = useLoading();
@@ -21,7 +21,7 @@ const SearchTask = () => {
 
       setError("");
       setIsLoading(true);
-      const res = await axios.get("https://taskmanagement-backend-xjgy.onrender.com/api/tasks", {
+      const res = await axiosInstance.get("https://taskmanagement-backend-xjgy.onrender.com/api/tasks", {
         headers: {
           Authorization: `Bearer ${token}`
         }

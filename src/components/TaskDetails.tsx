@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../css/CreateTask.css";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const TaskDetails = () => {
   const { setIsLoading } = useLoading();
@@ -16,7 +16,7 @@ const TaskDetails = () => {
       const userData = localStorage.getItem("user");
       setIsLoading(true);
       const token = userData ? JSON.parse(userData).token : null;
-      const res = await axios.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
+      const res = await axiosInstance.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -32,7 +32,7 @@ const TaskDetails = () => {
     const userData = localStorage.getItem("user");
     const token = userData ? JSON.parse(userData).token : null;
     if (window.confirm("Are you sure you want to delete this task?")) {
-      await axios.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
+      await axiosInstance.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

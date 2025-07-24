@@ -1,6 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
-
+import axiosInstance from "../Auth/AxiosInstance";
 const DeleteTask = () => {
   const [id, setId] = useState("");
   const [message, setMessage] = useState("");
@@ -9,7 +8,7 @@ const DeleteTask = () => {
     try {
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
-      await axios.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
+      await axiosInstance.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

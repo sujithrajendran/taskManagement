@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Auth.css";
-import axios from "axios";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const EmailLogin = () => {
   const { setIsLoading } = useLoading();
@@ -15,7 +15,7 @@ const EmailLogin = () => {
     setMessage("");
     try {
       setIsLoading(true);
-      const result = await axios.post(
+      const result = await axiosInstance.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks/send-otp",
         {
           email

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useLoading } from "./LoadingContext";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import "../css/CreateTask.css";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const Login = () => {
   const { setIsLoading } = useLoading();
@@ -18,7 +18,7 @@ const Login = () => {
     setMessage("");
     try {
       setIsLoading(true);
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks/login",
         form
       );
@@ -43,7 +43,7 @@ const Login = () => {
   const handleGoogleSuccess = async (credentialResponse: any) => {
     try {
       const token: any = jwtDecode(credentialResponse.credential);
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks/google-login",
         { token }
       );

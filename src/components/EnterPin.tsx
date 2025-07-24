@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
-import "../css/Auth.css"; // your styles
-import axios from "axios";
+import "../css/Auth.css";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const EnterPin = () => {
-    const { setIsLoading } = useLoading();
+  const { setIsLoading } = useLoading();
   const [pin, setPin] = useState<string[]>(Array(6).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [message, setMessage] = useState("");
@@ -43,7 +43,7 @@ const EnterPin = () => {
       const userData = localStorage.getItem("user");
       const email = userData ? JSON.parse(userData).email : null;
       setIsLoading(true);
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "https://taskmanagement-backend-xjgy.onrender.com/api/tasks/verify-otp",
         {
           email,

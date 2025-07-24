@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import { CheckCircle, XCircle } from "lucide-react";
 import "../css/CreateTask.css";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const UpdateTask = () => {
   const { setIsLoading } = useLoading();
@@ -29,7 +29,7 @@ const UpdateTask = () => {
         const userData = localStorage.getItem("user");
         const token = userData ? JSON.parse(userData).token : null;
 
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`,
           {
             headers: {
@@ -66,11 +66,15 @@ const UpdateTask = () => {
       setIsLoading(true);
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
-      await axios.put(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`, form, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      await axiosInstance.put(
+        `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`,
+        form,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      });
+      );
       setIsLoading(false);
       setMessage("Task updated successfully!");
       setIsSuccess(true);

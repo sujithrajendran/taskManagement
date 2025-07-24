@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Auth.css";
-import axios from "axios";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
 
 const Signup = () => {
   const { setIsLoading } = useLoading();
@@ -44,7 +44,7 @@ const Signup = () => {
     setMessage("");
     try {
       setIsLoading(true);
-      await axios.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/register", signUp);
+      await axiosInstance.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/register", signUp);
       setIsLoading(false);
       navigate("/login");
     } catch (err) {

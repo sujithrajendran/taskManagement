@@ -4,6 +4,7 @@ import { CheckCircle, XCircle } from "lucide-react";
 import "../css/CreateTask.css";
 import { useLoading } from "./LoadingContext";
 import axiosInstance from "../Auth/AxiosInstance";
+import socket from "../socket";
 
 const UpdateTask = () => {
   const { setIsLoading } = useLoading();
@@ -24,22 +25,28 @@ const UpdateTask = () => {
 
   useEffect(() => {
     const fetchTask = async () => {
-      try {
-        setIsLoading(true);
-        const userData = localStorage.getItem("user");
-        const token = userData ? JSON.parse(userData).token : null;
+      // try {
+      setIsLoading(true);
+      const userData = localStorage.getItem("user");
+      const token = userData ? JSON.parse(userData).token : null;
 
-        const res = await axiosInstance.get(
-          `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-
+      socket.emit("getParticularTask", {
+        taskId,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      // const res = await axiosInstance.get(
+      //   `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`
+      //     }
+      //   }
+      // );
+      socket.once("getParticularTask", (response: any) => {
         setIsLoading(false);
-        const task = res.data.task[0];
+        const task = response.task[0];
         const newForm = {
           taskName: task.taskName || "",
           description: task.description || "",
@@ -50,11 +57,13 @@ const UpdateTask = () => {
         };
         setForm(newForm);
         setInitialForm(newForm);
-      } catch {
+      });
+
+      socket.once("error", (error: { message: any }) => {
         setIsLoading(false);
         setMessage("Failed to fetch task");
         setIsSuccess(false);
-      }
+      });
     };
 
     if (taskId) fetchTask();
@@ -66,19 +75,31 @@ const UpdateTask = () => {
       setIsLoading(true);
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
-      await axiosInstance.put(
-        `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`,
-        form,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+
+      socket.emit("updateTask", {
+        taskData: { ...form },
+        taskId,
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
-      setIsLoading(false);
-      setMessage("Task updated successfully!");
-      setIsSuccess(true);
-      navigate("/");
+      });
+
+      // await axiosInstance.put(
+      //   `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${taskId}`,
+      //   form,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`
+      //     }
+      //   }
+      // );
+
+      socket.once("updateTask", () => {
+        setIsLoading(false);
+        setMessage("Task updated successfully!");
+        setIsSuccess(true);
+        navigate("/");
+      });
     } catch {
       setMessage("Failed to update task");
       setIsSuccess(false);
@@ -135,7 +156,7 @@ const UpdateTask = () => {
               value={form.priority}
               onChange={(e) => setForm({ ...form, priority: e.target.value })}
             >
-              <option value="High">High</option>
+              <option value="High">High</option>[]
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
             </select>

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../Auth/AxiosInstance";
 import { CheckCircle, XCircle } from "lucide-react";
 import "../css/CreateTask.css";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "./LoadingContext";
+import socket from "../socket";
 
 const CreateTask = () => {
   const { setIsLoading } = useLoading();
@@ -19,24 +20,35 @@ const CreateTask = () => {
 
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(true);
+  const [users, setUsers] = useState<string[]>([]);
+
+  useEffect(() => {
+    socket.emit("getRegisteredUser", {});
+    socket.on("getRegisteredUser", (response: any) => {
+      const allUsers = response.allUsers;
+      setUsers(allUsers);
+    });
+
+    return () => {
+      socket.off("getRegisteredUser");
+    };
+  }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
     const userData = localStorage.getItem("user");
     const token = userData ? JSON.parse(userData).token : null;
-    try {
-      setIsLoading(true);
-      const response = await axiosInstance.post(
-        "https://taskmanagement-backend-xjgy.onrender.com/api/tasks",
-        form,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
+    setIsLoading(true);
+    socket.emit("createTask", {
+      taskData: { ...form },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    socket.once("createTask", (response: { message: any }) => {
       setIsLoading(false);
-      setMessage(response.data.message);
+      setMessage(response.message || "Task created successfully!");
       setIsSuccess(true);
       setForm({
         taskName: "",
@@ -47,12 +59,13 @@ const CreateTask = () => {
         createdBy: ""
       });
       navigate("/");
-    } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message || "Task Name is already present";
-      setMessage(errorMessage);
+    });
+
+    socket.once("error", (error: { message: any }) => {
+      setIsLoading(false);
+      setMessage(error.message || "Something went wrong");
       setIsSuccess(false);
-    }
+    });
   };
 
   return (
@@ -96,12 +109,18 @@ const CreateTask = () => {
           </div>
           <div className="task-form-group">
             <label>Created By</label>
-            <input
-              type="string"
+            <select
               value={form.createdBy}
               onChange={(e) => setForm({ ...form, createdBy: e.target.value })}
               required
-            />
+            >
+              <option value="">-- Select User --</option>
+              {users.map((user) => (
+                <option key={user} value={user}>
+                  {user}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="task-form-group">

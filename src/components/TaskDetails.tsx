@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../css/CreateTask.css";
 import { useLoading } from "./LoadingContext";
 import axiosInstance from "../Auth/AxiosInstance";
+import socket from "../socket";
 
 const TaskDetails = () => {
   const { setIsLoading } = useLoading();
@@ -16,13 +17,27 @@ const TaskDetails = () => {
       const userData = localStorage.getItem("user");
       setIsLoading(true);
       const token = userData ? JSON.parse(userData).token : null;
-      const res = await axiosInstance.get(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
+
+      socket.emit("getParticularTask", {
+        taskId: id,
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      setIsLoading(false);
-      setTask(res.data.task[0]);
+
+      // const res = await axiosInstance.get(
+      //   `https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`
+      //     }
+      //   }
+      // );
+
+      socket.once("getParticularTask", (response: any) => {
+        setIsLoading(false);
+        setTask(response.task[0]);
+      });
     } catch {
       setError("Task not found");
     }
@@ -32,11 +47,18 @@ const TaskDetails = () => {
     const userData = localStorage.getItem("user");
     const token = userData ? JSON.parse(userData).token : null;
     if (window.confirm("Are you sure you want to delete this task?")) {
-      await axiosInstance.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
+      socket.emit("deleteTask", {
+        taskId: id,
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+
+      // await axiosInstance.delete(`https://taskmanagement-backend-xjgy.onrender.com/api/tasks/${id}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // });
       navigate("/");
     }
   };
@@ -46,7 +68,7 @@ const TaskDetails = () => {
   }, []);
 
   if (error) return <div>{error}</div>;
-  if (!task) return <div>Loading...</div>;
+  if (!task) return <div></div>;
 
   return (
     <div className="task-container">

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../css/SearchTask.css";
 import { useLoading } from "./LoadingContext";
 import axiosInstance from "../Auth/AxiosInstance";
+import socket from "../socket";
 
 const SearchTask = () => {
   const { setIsLoading } = useLoading();
@@ -21,15 +22,22 @@ const SearchTask = () => {
 
       setError("");
       setIsLoading(true);
-      const res = await axiosInstance.get("https://taskmanagement-backend-xjgy.onrender.com/api/tasks", {
+      socket.emit("getTask", {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      setIsLoading(false);
-      const data = res.data.tasks || [];
-      setAllTasks(data);
-      setResults(data);
+      // const res = await axiosInstance.get("https://taskmanagement-backend-xjgy.onrender.com/api/tasks", {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // });
+      socket.once("getTask", (response: any) => {
+        setIsLoading(false);
+        const data = response.tasks || [];
+        setAllTasks(data);
+        setResults(data);
+      });
     } catch {
       setAllTasks([]);
       setResults([]);

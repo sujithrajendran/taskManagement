@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
-import axios from "axios";
 import { useLoading } from "./LoadingContext";
+import axiosInstance from "../Auth/AxiosInstance";
+import socket from "../socket";
 
 const GraphPage = () => {
   const { setIsLoading } = useLoading();
@@ -14,15 +15,23 @@ const GraphPage = () => {
       const userData = localStorage.getItem("user");
       const token = userData ? JSON.parse(userData).token : null;
       setIsLoading(true);
-      const res = await axios.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/chart", {
+      socket.emit("getChart", {
         chartKey,
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      setIsLoading(false);
-      const chartData = res.data.chartData ? res.data.chartData : {};
-      setChartData(chartData);
+      // const res = await axiosInstance.post("https://taskmanagement-backend-xjgy.onrender.com/api/tasks/chart", {
+      //   chartKey,
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // });
+      socket.once("getChart", (response: any) => {
+        setIsLoading(false);
+        const chartData = response.chartData ? response.chartData : {};
+        setChartData(chartData);
+      });
     } catch (err) {
       console.error("Failed to fetch chart data", err);
     }

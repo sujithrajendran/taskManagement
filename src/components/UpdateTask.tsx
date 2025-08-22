@@ -121,7 +121,7 @@ const UpdateTask = () => {
               <option value="Started">Started</option>
               <option value="In-Progress">In-Progress</option>
               <option value="Pending">Pending</option>
-              <option value="Completed">Completed</option>
+              <option value="Closed">Closed</option>
             </select>
           </div>
 
@@ -186,3 +186,4 @@ const UpdateTask = () => {
 };
 
 export default UpdateTask;
+
